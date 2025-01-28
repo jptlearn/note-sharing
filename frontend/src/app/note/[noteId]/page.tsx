@@ -8,13 +8,13 @@ const singleNote = async ({ params }: { params: { noteId: string } }) => {
     const response = await fetch(
       `${process.env.BACKEND_URL}/notes/${params.noteId}`
     );
-    if (!response) {
+    if (!response.ok) {
       throw new Error("Error while fetching note.");
     }
     const { data } = await response.json();
     note = data;
   } catch (error) {
-    throw new Error("Error fetching");
+    throw new Error("Error fetching", error.message);
   }
   return (
     <div className="bg-gray-100 dark:bg-gray-800 py-8">
