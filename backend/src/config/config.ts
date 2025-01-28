@@ -7,6 +7,7 @@ const envConfig = {
   dbName: process.env.MONGO_DB_NAME,
   backendURL: process.env.BACKEND_URL,
   nodeEnv: process.env.NODE_ENV,
+  frontendURL: process.env.FRONTEND_URL,
 };
 
 export default envConfig;

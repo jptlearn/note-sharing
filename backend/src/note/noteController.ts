@@ -50,7 +50,7 @@ const listNote = async (req: Request, res: Response, next: NextFunction) => {
     }
     res.status(200).json({
       message: "Note fetched",
-      data: notes,
+      data: note,
     });
   } catch (err) {
     return next(createHttpError(500, "Error fetching note."));
