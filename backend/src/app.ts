@@ -17,7 +17,7 @@ app.use(
 app.use("/api/v1/notes", noteRouter);
 
 // IMAGE PUBLIC
-app.use(express.static(".src/uploads/"));
+app.use(express.static("./src/uploads/"));
 
 // ERROR HANDLER
 app.use(globalErrorHandler);
