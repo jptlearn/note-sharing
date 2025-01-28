@@ -13,6 +13,7 @@ const createNote = async (req: Request, res: Response, next: NextFunction) => {
       res.status(400).json({
         message: "Please provide title, subtitle and description.",
       });
+      return;
     }
     await noteModel.create({
       title,
@@ -24,7 +25,7 @@ const createNote = async (req: Request, res: Response, next: NextFunction) => {
       message: "Note created.",
     });
   } catch (error) {
-    next(createHttpError(500, "Error while creating note"));
+    return next(createHttpError(500, "Error while creating note"));
   }
 };
 
