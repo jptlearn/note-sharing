@@ -1,6 +1,7 @@
 "use client";
 import { Note } from "@/types";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 const NoteCard = ({ notes }: { notes: Note[] }) => {
@@ -35,6 +36,12 @@ const NoteCard = ({ notes }: { notes: Note[] }) => {
                 </div>
                 <span className="text-gray-600"></span>
               </div>
+              <Link
+                href={`/note/${note._id}`}
+                className="text-black hover:text-gray-700 font-medium inline-block mt-4"
+              >
+                Read More
+              </Link>
             </div>
           </div>
         );
