@@ -57,6 +57,79 @@ const listNote = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const updateNote = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+    if (!id) {
+      return next(createHttpError(400, "Id requrired"));
+    }
+    const { title, subtitle, description } = req.body;
+    if (!title || !subtitle || !description) {
+      return next(
+        createHttpError(401, "At least one field should be provided")
+      );
+    }
+    const updateData: any = {};
+    if (title) updateData.title = title;
+    if (subtitle) updateData.subtitle = subtitle;
+    if (description) updateData.description = description;
+
+    const note = await noteModel.findByIdAndUpdate(id, updateData, {
+      new: true,
+    });
+    if (!note) {
+      return next(createHttpError(404, "Not not found with the given id."));
+    }
+    res.status(200).json({
+      message: "Note updated.",
+      data: note,
+    });
+  } catch (error) {
+    return next(createHttpError(500, "Error while updating note."));
+  }
+};
+
+const updateFile = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+
+    // Check if ID is provided
+    if (!id) {
+      return next(createHttpError(400, "ID required")); // Changed to 400 Bad Request
+    }
+
+    const file = req.file;
+
+    // Check if file is provided
+    if (!file) {
+      return next(createHttpError(400, "File required.")); // Changed to 400 Bad Request
+    }
+
+    const filePath = `${envConfig.backendURL}/${file.filename}`;
+
+    // Update the note with the new file path
+    const note = await noteModel.findByIdAndUpdate(
+      id,
+      { file: filePath },
+      { new: true }
+    ); // Use { new: true } to return the updated document
+
+    // Check if the note was found and updated
+    if (!note) {
+      return next(createHttpError(404, "Note not found.")); // Handle case where note is not found
+    }
+
+    // Send success response
+    res.status(200).json({
+      message: "File has been updated.",
+      data: note,
+    });
+  } catch (err) {
+    // Handle unexpected errors
+    return next(createHttpError(500, "Error updating file."));
+  }
+};
+
 const deleteNote = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
@@ -69,4 +142,4 @@ const deleteNote = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export { createNote, listNotes, listNote, deleteNote };
+export { createNote, listNotes, listNote, updateNote, updateFile, deleteNote };
